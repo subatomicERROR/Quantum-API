@@ -128,4 +128,3 @@ Developed with passion by **Yash Ramteke** (alias: **subatomicERROR**), a quantu
 ## 📄 License
 
 This project is open-source and available under the [MIT License](LICENSE).
-```
