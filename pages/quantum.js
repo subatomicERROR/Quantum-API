@@ -1,20 +1,29 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+// pages/api/quantum.js
 
-// Example Quantum-ML function (can be replaced with your actual model or quantum processing code)
-const quantumMLFunction = async () => {
-  // Simulating quantum computation here (replace with actual model/training process)
-  return { message: "Quantum computation completed successfully", status: "success" };
-};
+const { spawn } = require('child_process');
 
-export default async (req = NextApiRequest, res = NextApiResponse) => {
+export default function handler(req, res) {
   if (req.method === 'GET') {
-    try {
-      const result = await quantumMLFunction();
-      res.status(200).json(result);
-    } catch (error) {
-      res.status(500).json({ message: 'Internal Server Error', error: error.message });
-    }
+    const x = req.query.x || 1;  // Get parameter `x` from query
+    
+    // Spawn the Python process
+    const python = spawn('python3', ['quantum-api/quantum_api.py', x]);
+
+    python.stdout.on('data', (data) => {
+      // Send the result from Python to the client
+      res.status(200).json({ result: data.toString() });
+    });
+
+    python.stderr.on('data', (data) => {
+      res.status(500).json({ error: data.toString() });
+    });
+
+    python.on('close', (code) => {
+      if (code !== 0) {
+        res.status(500).json({ message: 'Python script failed' });
+      }
+    });
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
-};
+}
