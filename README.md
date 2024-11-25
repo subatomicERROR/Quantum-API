@@ -129,9 +129,3 @@ Developed with passion by **Yash Ramteke** (alias: **subatomicERROR**), a quantu
 
 This project is open-source and available under the [MIT License](LICENSE).
 ```
-
-### How to Use:
-1. Save this content in a `README.md` file at the root of your project.
-2. You can customize the sections further if needed.
-
-Let me know if you'd like additional edits or help with anything else! 😊
