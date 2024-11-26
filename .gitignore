@@ -36,4 +36,4 @@ yarn-error.log*
 next-env.d.ts
 
 # ignore quantum environment
-quantum-env/
+quantum-venv/
