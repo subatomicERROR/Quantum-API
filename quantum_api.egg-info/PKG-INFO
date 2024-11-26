@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: quantum-api
+Version: 0.1
+License-File: LICENCE
+Requires-Dist: fastapi
+Requires-Dist: pennylane
