@@ -1,14 +1,6 @@
-from fastapi import FastAPI
-from typing import Optional
+# main.py
+import uvicorn
+from app import app  # Importing the FastAPI app instance from app.py
 
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to Quantum-API!"}
-
-@app.get("/quantum-endpoint")
-def quantum_endpoint(data: Optional[str] = None):
-    # Simulate some processing, you can integrate it with your Quantum-ML model here.
-    result = f"Processed quantum data: {data}"
-    return {"result": result}
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=5001)
