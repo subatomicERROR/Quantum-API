@@ -37,3 +37,7 @@ next-env.d.ts
 
 # ignore quantum environment
 quantum-venv/
+
+# ignore python environment and cache files
+__pycache__/
+venv/
