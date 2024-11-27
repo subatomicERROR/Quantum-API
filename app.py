@@ -1,13 +1,18 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Optional
 import logging
+import os
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
+
+# Serve static files (like favicon.ico) from the 'static' directory
+app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
 
 # Quantum Data Processing Model using Pydantic for validation
 class QuantumData(BaseModel):
@@ -102,4 +107,3 @@ def get_status():
     except Exception as e:
         logger.error(f"Error while fetching API status: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error while fetching API status")
-
