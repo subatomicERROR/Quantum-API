@@ -28,11 +28,12 @@ function Home() {
 
   return (
     <main className={styles.main}>
-      <h1>Fast Refresh Demo</h1>
+      <h1>Welcome to Quantum-API</h1>
       <p>
-        Fast Refresh is a Next.js feature that gives you instantaneous feedback
-        on edits made to your React components, without ever losing component
-        state.
+        Quantum-API is a powerful RESTful API designed to expose quantum machine learning capabilities. It enables seamless interaction with quantum models for tasks like model training, data analysis, and predictions, providing advanced solutions using quantum computing integrated with classical machine learning.
+      </p>
+      <p>
+        Whether you are integrating quantum models into your application or leveraging quantum computation for data analysis, Quantum-API offers a simple interface for complex quantum tasks.
       </p>
       <hr className={styles.hr} />
       <div>
