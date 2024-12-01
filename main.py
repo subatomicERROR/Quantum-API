@@ -1,7 +1,10 @@
 import uvicorn
-from app import app  # Import the FastAPI app instance from app.py
+from fastapi import FastAPI
+from pydantic import BaseModel
 import pennylane as qml
 import numpy as np
+
+app = FastAPI()  # Initialize FastAPI app
 
 # Quantum circuit for decision-making
 def quantum_decision_making():
@@ -20,14 +23,24 @@ def quantum_decision_making():
     print(f"Quantum decision outcome: {result}")
     return result
 
-if __name__ == "__main__":
-    # Get a quantum-enhanced decision before starting the app
+# Define request data model for input validation (e.g., what to input for prediction)
+class PredictionRequest(BaseModel):
+    input_data: str  # Add more fields as required
+
+# Define the prediction endpoint
+@app.post("/quantum-ai/predict")
+async def predict(request: PredictionRequest):
+    # Call the quantum decision making function
     quantum_result = quantum_decision_making()
 
     # Based on the quantum result, we could make some intelligent decision
     if quantum_result > 0:
-        print("Decision: Proceed with optimal path based on quantum insight.")
+        decision = "Proceed with optimal path based on quantum insight."
     else:
-        print("Decision: Explore alternative paths based on quantum insight.")
+        decision = "Explore alternative paths based on quantum insight."
 
-    uvicorn.run(app, host="0.0.0.0", port=5000)  # Start FastAPI server
+    return {"quantum_result": quantum_result, "decision": decision}
+
+if __name__ == "__main__":
+    # Start FastAPI server
+    uvicorn.run(app, host="0.0.0.0", port=5000)
