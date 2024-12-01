@@ -1,130 +1,131 @@
-# Quantum-API 🚀
+# Quantum-API
 
-**subatomicERROR** presents **Quantum-API**, a RESTful API to expose cutting-edge quantum machine learning capabilities. This project leverages **Quantum-ML** and **Next.js** to enable seamless interaction with quantum models for tasks like model training, data analysis, and more.
+Quantum-API is a web API built using **FastAPI** and **PennyLane**, providing quantum-enhanced decision-making capabilities. The API exposes a simple quantum circuit that performs decision-making tasks based on quantum computation. This API is part of a larger quantum machine learning system that integrates with other services like Quantum-Compute for quantum computation and Quantum-ML for model training.
 
----
+## Features
 
-## 🔍 Overview
+- Quantum decision-making using **PennyLane** and **Quantum Circuit**.
+- Exposes an endpoint to predict a quantum-enhanced decision.
+- Built with **FastAPI** for high performance and asynchronous support.
+- Can be integrated with other quantum systems and microservices.
 
-Quantum-API is designed to:
-- Provide a user-friendly interface for accessing quantum machine learning models.
-- Enable integration of quantum computing functionalities into other applications or services.
-- Accelerate your journey into quantum computing with modern web technologies.
+## Requirements
 
----
+- Python 3.8+
+- `pip install -r requirements.txt`
 
-## 💡 Features
+## Installation
 
-- Built using **Next.js** for a powerful and scalable web backend.
-- Integration with **Quantum-ML**, leveraging tools like PennyLane and Qiskit for quantum machine learning tasks.
-- Easy-to-use API endpoints for running quantum simulations, model training, or data analysis.
-
----
-
-## 📁 Project Structure
-
-```plaintext
-Quantum-API/
-│
-├── pages/
-│   ├── api/
-│   │   └── quantum-api.js      # Main API route for Quantum-ML
-│   └── index.js                # Example frontend for interacting with the API
-│
-├── quantum_model.py            # Python script for quantum computations
-├── package.json                # Node.js dependencies
-├── README.md                   # Project documentation
-└── ...
-```
-
----
-
-## 🚀 Getting Started
-
-### 1️⃣ Prerequisites
-
-- Node.js (v14+ recommended)
-- Python (v3.8+)
-- Quantum-ML dependencies: PennyLane, Qiskit, NumPy
-
-### 2️⃣ Installation
-
-Clone the repository and install dependencies:
+### Clone the repository
 
 ```bash
-# Clone the repo
 git clone https://github.com/subatomicERROR/Quantum-API.git
 cd Quantum-API
-
-# Install Node.js dependencies
-npm install
-
-# Install Python dependencies
-pip install pennylane qiskit numpy
 ```
 
-### 3️⃣ Run Locally
-
-Start the development server:
+### Set up a virtual environment
 
 ```bash
-# Activate your Python virtual environment (if applicable)
-source quantum-env/bin/activate  # Unix
-# quantum-env\Scripts\activate   # Windows
-
-# Start the Next.js server
-npm run dev
+python3 -m venv quantum-env
+source quantum-env/bin/activate  # On Windows: quantum-env\Scripts\activate
 ```
 
-Visit `http://localhost:3000` to interact with the application.
-
----
-
-## 🌟 API Usage
-
-### POST `/api/quantum-api`
-
-Send a POST request to execute quantum ML tasks. Example:
+### Install the dependencies
 
 ```bash
-curl -X POST http://localhost:3000/api/quantum-api \
--H "Content-Type: application/json" \
--d '{"data": "some_input_data"}'
+pip install -r requirements.txt
 ```
 
-Response:
+## Running the API
+
+Once the dependencies are installed, you can run the API using **Uvicorn**:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 5000
+```
+
+This will start the FastAPI application, and it will be available at `http://localhost:5000`.
+
+## Endpoints
+
+### `GET /`
+
+The root endpoint returns a simple confirmation message indicating the API is running.
+
+### `POST /quantum-ai/predict`
+
+This endpoint performs quantum-enhanced decision-making based on the result of a quantum circuit simulation.
+
+#### Request Body:
 
 ```json
 {
-  "result": "Quantum model result: 0.12345"
+  "input_data": "your_data_here"
 }
 ```
 
----
+#### Response:
 
-## 🤖 Technologies Used
+The response includes the quantum result and the decision based on the result.
 
-- **Next.js**: Web framework for server-side rendering and API routes.
-- **PennyLane**: Quantum computing and machine learning library.
-- **Qiskit**: Quantum computing framework for Python.
-- **Node.js**: Backend runtime for API development.
+```json
+{
+  "quantum_result": 0.0,
+  "decision": "Explore alternative paths based on quantum insight."
+}
+```
 
----
+### Quantum Decision Logic
 
-## ✨ About the Creator
+The quantum decision-making function runs a quantum circuit with 2 qubits. It applies the following gates:
+- **Hadamard Gate** on qubit 0 (creating superposition).
+- **CNOT Gate** between qubits 0 and 1 (entangling the qubits).
+- **Pauli Z Measurement** on qubit 0 to measure the quantum state.
 
-Developed with passion by **Yash Ramteke** (alias: **subatomicERROR**), a quantum enthusiast on a mission to simplify quantum machine learning and unlock its potential for real-world applications.
+Based on the measurement outcome:
+- If the result is positive (`> 0`), the decision is to proceed with the optimal path.
+- If the result is negative (`<= 0`), the decision is to explore alternative paths.
 
----
+## Example Usage
 
-## 🛠️ Future Enhancements
+### Send a Request to `/quantum-ai/predict`
 
-- [ ] Add support for advanced quantum models.
-- [ ] Build a dedicated frontend for visualizing quantum results.
-- [ ] Deploy the API to production (e.g., Vercel or AWS).
+You can test the prediction endpoint using `curl`:
 
----
+```bash
+curl -X 'POST' 'http://localhost:5000/quantum-ai/predict' -H 'Content-Type: application/json' -d '{
+  "input_data": "your_data_here"
+}'
+```
 
-## 📄 License
+#### Example Response:
 
-This project is open-source and available under the [MIT License](LICENSE).
+```json
+{
+  "quantum_result": 0.0,
+  "decision": "Explore alternative paths based on quantum insight."
+}
+```
+
+## Contributing
+
+Feel free to contribute by submitting pull requests. All contributions are welcome, whether they are bug fixes, new features, or improvements to documentation.
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -am 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Create a new Pull Request.
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Acknowledgments
+
+- **FastAPI** for providing the framework to build fast and scalable APIs.
+- **PennyLane** for enabling quantum machine learning and quantum computing simulations.
+- **Uvicorn** for serving the FastAPI application with high performance.
+
+```
+made by subatomicERROR [ Yash Ramteke ]
