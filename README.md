@@ -1,6 +1,5 @@
 # Quantum-API
 
-<<<<<<< HEAD
 Quantum-API is a fast and scalable API built with FastAPI and Quantum computing principles, leveraging PennyLane for quantum-enhanced decision making. This API exposes quantum-powered endpoints to help make intelligent, data-driven decisions using quantum insights.
 
 ## Features
