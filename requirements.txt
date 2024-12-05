@@ -90,3 +90,4 @@ overrides
 nest-asyncio
 dill
 filelock
+fastapi
