@@ -4,9 +4,10 @@ from pydantic import BaseModel
 from typing import Optional
 import logging
 import os
+from fastapi.responses import HTMLResponse
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
+# Set up logging with advanced structure (including time and level)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
@@ -19,11 +20,37 @@ class QuantumData(BaseModel):
     data: str
     quantum_factor: Optional[float] = 1.0  # Additional parameter to influence quantum processing
 
-# Root endpoint
-@app.get("/")
+# Root endpoint with SEO optimization
+@app.get("/", response_class=HTMLResponse)
 def read_root():
     logger.info("Accessed the Quantum API root endpoint.")
-    return {"message": "Welcome to the enhanced Quantum API with Quantum-ML integration!"}
+    
+    # Basic SEO headers
+    seo_meta_tags = '''
+    <meta name="description" content="Quantum-API: A cutting-edge platform for quantum data processing and simulation. Explore quantum models, simulations, and entanglement with advanced quantum data handling.">
+    <meta name="keywords" content="Quantum, Quantum-API, Data Processing, Quantum Simulation, Quantum Entanglement">
+    <meta name="author" content="subatomicERROR">
+    <meta property="og:title" content="Quantum-API - Quantum Data Processing">
+    <meta property="og:description" content="Explore Quantum API's data processing and quantum simulations. Integrating Quantum-ML for advanced data analysis and problem-solving.">
+    <meta property="og:image" content="/static/favicon.ico">
+    '''
+    
+    return f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quantum-API</title>
+        {seo_meta_tags}
+    </head>
+    <body>
+        <h1>Welcome to the Quantum API with Quantum-ML Integration!</h1>
+        <p>Explore Quantum Data Processing, Simulations, and more.</p>
+    </body>
+    </html>
+    """
 
 # Quantum endpoint for data processing (POST request to handle quantum data)
 @app.post("/quantum-endpoint")
@@ -93,7 +120,7 @@ async def quantum_state():
         logger.error(f"Error while fetching quantum state: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error while fetching quantum state")
 
-# Endpoint to get API status
+# Endpoint to get API status with better error handling
 @app.get("/status")
 def get_status():
     try:
@@ -107,3 +134,9 @@ def get_status():
     except Exception as e:
         logger.error(f"Error while fetching API status: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal Server Error while fetching API status")
+
+# Custom error handler for better error management
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request, exc: HTTPException):
+    logger.error(f"HTTP Error occurred: {exc.detail}")
+    return {"error": exc.detail, "message": "There was an error processing your request."}
