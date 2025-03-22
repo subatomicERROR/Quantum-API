@@ -7,20 +7,20 @@ import os
 from fastapi.responses import HTMLResponse
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
 app = FastAPI()
 
-# Serve static files (favicon, images, etc.)
+# Serve static files (for Hugging Face compatibility)
 if os.path.exists("static"):
     app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Quantum Data Model
 class QuantumData(BaseModel):
     data: str
-    quantum_factor: Optional[float] = 1.0  # Influence quantum processing
+    quantum_factor: Optional[float] = 1.0  # Quantum computation parameter
 
 # Root HTML Response
 @app.get("/", response_class=HTMLResponse)
@@ -35,7 +35,7 @@ def home():
     </head>
     <body>
         <h1>Welcome to the Quantum API!</h1>
-        <p>Powered by FastAPI and PennyLane.</p>
+        <p>Hosted on Hugging Face Spaces, powered by FastAPI and PennyLane.</p>
     </body>
     </html>
     """
