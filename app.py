@@ -1,18 +1,21 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+from main import quantum_decision
 
-# Initialize FastAPI app
-app = FastAPI(title="Quantum-API", description="An API for Quantum Machine Learning tasks using PennyLane and PyTorch.")
+app = FastAPI()
+
+class InputData(BaseModel):
+    input_data: str
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to Quantum-API hosted on Hugging Face Spaces!"}
+    return {"message": "Welcome to Quantum-API, powered by PennyLane & FastAPI!"}
 
-# Example quantum endpoint placeholder
-@app.get("/quantum-task")
-def quantum_task():
-    return {"result": "Quantum computation placeholder"}
+@app.post("/quantum-ai/predict")
+def predict(data: InputData):
+    result, decision = quantum_decision(data.input_data)
+    return {"quantum_result": result, "decision": decision}
 
-# Run the app when executed directly
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=7860)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
