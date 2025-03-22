@@ -1,0 +1,9 @@
+LICENCE
+README.md
+setup.py
+quantum_api.egg-info/PKG-INFO
+quantum_api.egg-info/SOURCES.txt
+quantum_api.egg-info/dependency_links.txt
+quantum_api.egg-info/entry_points.txt
+quantum_api.egg-info/requires.txt
+quantum_api.egg-info/top_level.txt

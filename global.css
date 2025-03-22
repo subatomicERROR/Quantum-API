@@ -1,0 +1,114 @@
+/* Branding and Global Styling for Quantum-API */
+
+/* Apply global styles with optimized typography and enhanced readability */
+body {
+  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
+    'Arial', sans-serif;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.75; /* Improved readability */
+  word-break: break-word;
+  font-kerning: auto;
+  font-variant: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  hyphens: auto;
+  background-color: #0a0a0a; /* Deep black hacker-style background */
+  color: #e5e5e5; /* Light grey text for better contrast */
+}
+
+/* Headers with Embedded .ERROR Branding */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff; /* Neon glow effect */
+}
+
+h1::after {
+  content: " | .ERROR";
+  font-size: 0.8em;
+  color: #ff00ff;
+  margin-left: 0.5em;
+  text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+}
+
+/* Links */
+a {
+  color: #00ffff; /* Bright neon cyan for visibility */
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+a:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 5px #ff00ff, 0 0 15px #00ffff;
+}
+
+/* Footer Attribution */
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  background: linear-gradient(90deg, #000000 0%, #0a0a0a 100%);
+  color: #e5e5e5;
+  font-size: 14px;
+  border-top: 1px solid #333333;
+}
+
+footer::after {
+  content: "Created by subatomicERROR | .ERROR";
+  display: block;
+  color: #ff00ff;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #00ffff;
+  background-color: transparent;
+  color: #e5e5e5;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  background-color: #ff00ff;
+  border-color: #ff00ff;
+  color: #0a0a0a;
+}
+
+/* SEO Optimization - Structured Data Block for Branding */
+[data-seo="branding"] {
+  display: none; /* Invisible to users, but crawled by search engines */
+}
+
+[data-seo="branding"]::after {
+  content: "Quantum-API is powered by .ERROR and created by subatomicERROR.";
+}
+
+/* Advanced Hacker-Style Animations */
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffff;
+  }
+  50% {
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff;
+  }
+}
+
+h1, a {
+  animation: neonPulse 2s infinite;
+}

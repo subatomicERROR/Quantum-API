@@ -1,0 +1,93 @@
+# Core dependencies for FastAPI
+fastapi
+uvicorn
+
+# Quantum computing and machine learning
+qiskit
+pennylane
+torch
+
+# Numerical and scientific computing
+numpy
+scipy
+sympy
+symengine
+rustworkx
+
+# Data handling and analysis
+pandas
+scikit-learn
+seaborn
+
+# Plotting and visualization
+matplotlib
+plotly
+
+# Web and API-related dependencies
+httpx
+starlette
+pydantic
+
+# Markdown and web formatting
+bleach
+tinycss2
+webcolors
+webencodings
+
+# Parsing and utilities
+pyyaml
+six
+pyparsing
+
+# Async utilities
+anyio
+sniffio
+async-lru
+
+# Cryptography and security
+argon2-cffi
+argon2-cffi-bindings
+
+# Logging and debugging
+loguru
+python-json-logger
+
+# Date and time
+arrow
+isoduration
+python-dateutil
+tzdata
+pytz
+
+# JSON and schema validation
+jsonschema
+jsonschema-specifications
+referencing
+rfc3339-validator
+rfc3986-validator
+
+# Development tools
+debugpy
+jupyterlab
+notebook
+jupyter-server
+jupyter_client
+ipykernel
+matplotlib-inline
+
+# Testing and utilities
+pytest
+pytest-asyncio
+types-python-dateutil
+typing_extensions
+
+# Miscellaneous
+attrs
+decorator
+setuptools
+traitlets
+overrides
+nest-asyncio
+dill
+filelock
+fastapi
