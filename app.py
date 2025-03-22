@@ -1,21 +1,51 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from main import quantum_decision
+from typing import Optional
+import logging
+import os
+from fastapi.responses import HTMLResponse
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Initialize FastAPI app
 app = FastAPI()
 
-class InputData(BaseModel):
-    input_data: str
+# Serve static files (favicon, images, etc.)
+if os.path.exists("static"):
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to Quantum-API, powered by PennyLane & FastAPI!"}
+# Quantum Data Model
+class QuantumData(BaseModel):
+    data: str
+    quantum_factor: Optional[float] = 1.0  # Influence quantum processing
 
-@app.post("/quantum-ai/predict")
-def predict(data: InputData):
-    result, decision = quantum_decision(data.input_data)
-    return {"quantum_result": result, "decision": decision}
+# Root HTML Response
+@app.get("/", response_class=HTMLResponse)
+def home():
+    return """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quantum-API</title>
+    </head>
+    <body>
+        <h1>Welcome to the Quantum API!</h1>
+        <p>Powered by FastAPI and PennyLane.</p>
+    </body>
+    </html>
+    """
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+# Quantum Processing Endpoint
+@app.post("/quantum-endpoint")
+async def quantum_process(data: QuantumData):
+    logger.info(f"Processing quantum data: {data.data} with factor {data.quantum_factor}")
+    
+    # Placeholder quantum computation
+    quantum_result = f"Processed {data.data} with quantum factor {data.quantum_factor}"
+    
+    return {"quantum_result": quantum_result}
