@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum-API UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function predict() {
+            const inputData = document.getElementById("inputData").value;
+            document.getElementById("response").innerHTML = "Processing...";
+            
+            fetch("http://0.0.0.0:7860/quantum-ai/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ input_data: inputData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").innerHTML = `
+                    <p class="text-lg text-white">Decision: ${data.decision}</p>
+                    <p class="text-sm text-gray-400">Qubit 0: ${data.quantum_results.qubit_0}</p>
+                    <p class="text-sm text-gray-400">Qubit 1: ${data.quantum_results.qubit_1}</p>
+                    <p class="text-sm text-gray-400">Qubit 2: ${data.quantum_results.qubit_2}</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById("response").innerHTML = "<p class='text-red-500'>Error processing request.</p>";
+            });
+        }
+    </script>
+</head>
+<body class="bg-black flex justify-center items-center h-screen">
+    <div class="text-center">
+        <h1 class="text-3xl font-bold text-white animate-pulse">Quantum-API</h1>
+        <p class="text-gray-400 mt-2">Enter input data and get a quantum-based decision.</p>
+        
+        <input id="inputData" type="text" placeholder="Enter input data..." class="mt-4 px-4 py-2 rounded bg-gray-800 text-white border border-gray-600">
+        <button onclick="predict()" class="mt-4 px-6 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-800 transition">
+            Predict
+        </button>
+
+        <div id="response" class="mt-4 text-gray-300"></div>
+    </div>
+</body>
+</html>
