@@ -34,3 +34,18 @@ custom_headers:
 preload_from_hub:
   - openai-community/gpt2 config.json
 ---
+
+# Quantum-API UI
+
+This is the frontend UI for Quantum-API built with Next.js.
+
+## 🔥 Features:
+- Responsive UI for Quantum-API.
+- Styled with a **dark hacker aesthetic**.
+- Automatically updates the counter.
+
+## 🛠️ Deployment
+- Hosted on Hugging Face Spaces.
+- Built as a **static Next.js export**.
+
+📌 **Created by**: [subatomicERROR](https://github.com/subatomicERROR)
