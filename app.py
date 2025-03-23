@@ -5,13 +5,21 @@ from typing import Optional
 import logging
 import os
 from fastapi.responses import HTMLResponse
+from fastapi.openapi.utils import get_openapi
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
-app = FastAPI()
+app = FastAPI(
+    title="Quantum-API",
+    description="Quantum-API powered by FastAPI and PennyLane",
+    version="1.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
+)
 
 # Serve static files (for Hugging Face compatibility)
 if os.path.exists("static"):
@@ -49,3 +57,8 @@ async def quantum_process(data: QuantumData):
     quantum_result = f"Processed {data.data} with quantum factor {data.quantum_factor}"
     
     return {"quantum_result": quantum_result}
+
+# Enable OpenAPI schema
+@app.get("/openapi.json")
+def get_open_api_endpoint():
+    return get_openapi(title="Quantum-API", version="1.0", routes=app.routes)
