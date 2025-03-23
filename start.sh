@@ -21,7 +21,7 @@ fi
 # Check if main.py exists
 if [ -f "main.py" ]; then
     echo "🚀 Launching FastAPI..."
-    uvicorn main:app --reload --host 0.0.0.0 --port 5000
+    uvicorn main:app --host 0.0.0.0 --port 7860
 else
     echo "❌ ERROR: main.py not found!"
     exit 1
