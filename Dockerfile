@@ -19,8 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Fix permissions for Matplotlib and Fontconfig
 RUN mkdir -p /tmp/matplotlib /tmp/.cache && chmod -R 777 /tmp
 
-# Expose the correct port for FastAPI
-EXPOSE 5000
+# Expose the correct port for Hugging Face Spaces (7860)
+EXPOSE 7860
 
-# Start FastAPI with Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
+# Start FastAPI with Uvicorn on the correct port
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
