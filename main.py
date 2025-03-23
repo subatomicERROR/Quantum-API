@@ -1,12 +1,21 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import pennylane as qml
 import numpy as np
 
-app = FastAPI()  # Initialize FastAPI app
+app = FastAPI()
 
-# Root route
+# Enable CORS to prevent browser security issues
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all domains (change if needed)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
+
 @app.get("/")
 async def root():
     return {"message": "Welcome to the Quantum API on Hugging Face! Use /quantum-ai/predict for predictions."}
@@ -26,8 +35,7 @@ def quantum_decision_making():
         
         return qml.expval(qml.PauliZ(0)), qml.expval(qml.PauliZ(1)), qml.expval(qml.PauliZ(2))
 
-    result_0, result_1, result_2 = circuit()
-    return result_0, result_1, result_2
+    return circuit()
 
 # Request model
 class PredictionRequest(BaseModel):
@@ -40,8 +48,8 @@ async def predict(request: PredictionRequest):
     """
     try:
         quantum_results = quantum_decision_making()
-
         decision = ""
+        
         if quantum_results[0] > 0 and quantum_results[1] > 0:
             decision = "Proceed with optimal quantum path: Positive interference detected."
         elif quantum_results[2] < 0:
@@ -62,4 +70,4 @@ async def predict(request: PredictionRequest):
         raise HTTPException(status_code=500, detail=f"Quantum processing error: {str(e)}")
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=7860)  # Hugging Face Spaces default port
+    uvicorn.run(app, host="0.0.0.0", port=7860)
