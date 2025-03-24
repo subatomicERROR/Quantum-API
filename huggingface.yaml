@@ -1,0 +1,17 @@
+name: Quantum-API
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - flask
+  - flask-cors
+  - pennylane
+  - numpy
+  - nodejs
+build:
+  - pip install -r backend/requirements.txt
+  - cd frontend && npm install
+  - cd frontend && npm run build
+run:
+  - cd backend && gunicorn --bind 0.0.0.0:$PORT main:app
+  - serve -s Quantum-API-frontend
