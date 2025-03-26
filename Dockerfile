@@ -19,12 +19,16 @@ COPY . .
 # Install Python dependencies (FastAPI)
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Ensure 'main.py' is located in /app and correctly referenced
+WORKDIR /app/backend
+
 # Install Node.js dependencies (Next.js)
 WORKDIR /app/frontend
 RUN npm install && npm run build
 
-# Expose port for Hugging Face Spaces
+# Expose ports for FastAPI (7860) & Next.js (3000)
 EXPOSE 7860
+EXPOSE 3000
 
 # Start both FastAPI and Next.js
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 7860 & npm --prefix /app/frontend start"]
+CMD ["sh", "-c", "cd /app/backend && uvicorn main:app --host 0.0.0.0 --port 7860 & cd /app/frontend && npm start"]
