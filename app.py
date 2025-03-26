@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request, APIRouter
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
 from typing import Optional
@@ -21,11 +21,11 @@ app = FastAPI(
     openapi_url="/openapi.json"
 )
 
-# Serve the Next.js frontend
+# Serve the Next.js frontend on a subpath (/gui) instead of root
 FRONTEND_BUILD_DIR = "frontend-build"
 if os.path.exists(FRONTEND_BUILD_DIR):
-    app.mount("/", StaticFiles(directory=FRONTEND_BUILD_DIR, html=True), name="frontend")
-    logger.info("✅ Next.js frontend detected & mounted successfully.")
+    app.mount("/gui", StaticFiles(directory=FRONTEND_BUILD_DIR, html=True), name="frontend")
+    logger.info("✅ Next.js frontend detected & mounted at /gui.")
 
 # Serve static files
 if os.path.exists("static"):
@@ -39,36 +39,10 @@ class QuantumData(BaseModel):
 # API Router for better structure
 router = APIRouter()
 
-# Root HTML Response with SEO Optimization
+# Root route now redirects to the Next.js GUI at /gui
 @router.get("/", response_class=HTMLResponse)
 def home():
-    return """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Quantum-API powered by FastAPI and PennyLane. The future of quantum computing.">
-        <meta name="keywords" content="Quantum Computing, FastAPI, AI, PennyLane, Quantum-API">
-        <meta name="author" content="subatomicERROR">
-        <meta property="og:title" content="Quantum-API">
-        <meta property="og:description" content="Next-generation Quantum Computing API">
-        <meta property="og:image" content="/static/quantum-logo.png">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://huggingface.co/spaces/subatomicERROR/Quantum-API">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Quantum-API">
-        <meta name="twitter:description" content="Explore Quantum Computing with our API.">
-        <meta name="twitter:image" content="/static/quantum-logo.png">
-        <title>Quantum-API</title>
-        <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
-    </head>
-    <body>
-        <h1>🚀 Welcome to the Quantum API!</h1>
-        <p>Hosted on Hugging Face Spaces, powered by FastAPI and PennyLane.</p>
-    </body>
-    </html>
-    """
+    return RedirectResponse(url="/gui")
 
 # Quantum Processing Endpoint
 @router.post("/quantum-endpoint")
