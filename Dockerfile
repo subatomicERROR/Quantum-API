@@ -19,9 +19,6 @@ COPY . .
 # Install Python dependencies (FastAPI)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Ensure FastAPI runs from the correct directory
-WORKDIR /app/backend  # Adjust this based on your project structure
-
 # Install Node.js dependencies (Next.js)
 WORKDIR /app/frontend
 RUN npm install && npm run build
@@ -31,4 +28,4 @@ EXPOSE 7860
 EXPOSE 3000
 
 # Start both FastAPI and Next.js
-CMD ["sh", "-c", "cd /app/backend && uvicorn main:app --host 0.0.0.0 --port 7860 & cd /app/frontend && npm start"]
+CMD ["sh", "-c", "cd /app && uvicorn main:app --host 0.0.0.0 --port 7860 & cd /app/frontend && npm start"]
