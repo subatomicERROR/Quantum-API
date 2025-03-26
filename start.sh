@@ -2,7 +2,7 @@
 
 echo "🚀 Starting Quantum-API Server and Frontend..."
 
-# Auto-activate qvenv virtual environment
+# ✅ Activate the correct virtual environment (qvenv)
 if [ -d "qvenv" ]; then
     echo "🔄 Activating virtual environment (qvenv)..."
     source qvenv/bin/activate
@@ -11,34 +11,35 @@ else
     exit 1
 fi
 
-# Ensure pip and dependencies are installed
+# ✅ Install backend dependencies
 if [ -f "requirements.txt" ]; then
-    echo "📦 Checking and installing dependencies..."
+    echo "📦 Installing backend dependencies..."
     pip install --upgrade pip
     pip install -r requirements.txt
 else
     echo "⚠️ Warning: No requirements.txt file found!"
 fi
 
-# Check if main.py exists before running FastAPI
+# ✅ Start FastAPI Backend
 if [ -f "main.py" ]; then
-    echo "🚀 Launching FastAPI..."
+    echo "🚀 Launching FastAPI Backend..."
     uvicorn main:app --host 0.0.0.0 --port 7860 --reload &
 else
     echo "❌ ERROR: main.py not found!"
     exit 1
 fi
 
-# Navigate to frontend directory and start Next.js
-if [ -d "frontend" ]; then
+# ✅ Navigate to frontend and start Next.js
+FRONTEND_DIR="frontend"
+if [ -d "$FRONTEND_DIR" ]; then
     echo "🌐 Starting Next.js Frontend..."
-    cd frontend
-    npm install  # Ensure dependencies are installed
-    npm run build  # Build frontend
-    npm start &  # Start Next.js server
+    cd "$FRONTEND_DIR"
+    npm install
+    npm run build
+    npm start &
 else
     echo "⚠️ Warning: Frontend folder not found! Skipping..."
 fi
 
-# Wait for all background processes
+# ✅ Wait for all processes to run
 wait
