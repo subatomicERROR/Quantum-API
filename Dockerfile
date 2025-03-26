@@ -19,8 +19,8 @@ COPY . .
 # Install Python dependencies (FastAPI)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Ensure 'main.py' is located in /app and correctly referenced
-WORKDIR /app/backend
+# Ensure FastAPI runs from the correct directory
+WORKDIR /app/backend  # Adjust this based on your project structure
 
 # Install Node.js dependencies (Next.js)
 WORKDIR /app/frontend
