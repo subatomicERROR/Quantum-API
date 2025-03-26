@@ -1,8 +1,10 @@
-# Use a lightweight Python and Node.js image
-FROM python:3.10-slim AS backend
-FROM node:18-slim AS frontend
+# Use a base image that supports both Python & Node.js
+FROM mcr.microsoft.com/devcontainers/python:3.10
 
-# Set environment variables to fix Matplotlib and Fontconfig issues
+# Install Node.js manually
+RUN apt update && apt install -y nodejs npm
+
+# Set environment variables for Hugging Face Spaces compatibility
 ENV MPLCONFIGDIR=/tmp/matplotlib
 ENV XDG_CACHE_HOME=/tmp/.cache
 ENV FONTCONFIG_PATH=/etc/fonts
@@ -17,23 +19,12 @@ COPY . .
 # Install Python dependencies (FastAPI)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Fix permissions for Matplotlib and Fontconfig
-RUN mkdir -p /tmp/matplotlib /tmp/.cache && chmod -R 777 /tmp
-
-# --- FRONTEND (Next.js) ---
+# Install Node.js dependencies (Next.js)
 WORKDIR /app/frontend
+RUN npm install && npm run build
 
-# Install Next.js dependencies
-RUN npm install
-
-# Build Next.js app
-RUN npm run build
-
-# --- BACKEND (FastAPI) ---
-WORKDIR /app
-
-# Expose the correct port for Hugging Face Spaces (7860)
+# Expose port for Hugging Face Spaces
 EXPOSE 7860
 
-# Start FastAPI and Next.js together using a process manager
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 7860 & npm --prefix frontend run start"]
+# Start both FastAPI and Next.js
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 7860 & npm --prefix /app/frontend start"]
