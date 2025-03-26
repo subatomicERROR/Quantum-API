@@ -1,11 +1,21 @@
 from fastapi import FastAPI, HTTPException, Request, APIRouter
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from starlette.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.openapi.utils import get_openapi
 from pydantic import BaseModel
 from typing import Optional
 import logging
 import os
+
+# Custom StaticFiles class to provide a fallback to index.html for SPA routes
+class SPAStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope):
+        response = await super().get_response(path, scope)
+        if response.status_code == 404:
+            index_path = os.path.join(self.directory, "index.html")
+            if os.path.exists(index_path):
+                return FileResponse(index_path)
+        return response
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -21,11 +31,13 @@ app = FastAPI(
     openapi_url="/openapi.json"
 )
 
-# Serve the Next.js frontend on a subpath (/gui) instead of root
+# Serve the Next.js frontend on a subpath (/gui) using the SPAStaticFiles class
 FRONTEND_BUILD_DIR = "frontend-build"
 if os.path.exists(FRONTEND_BUILD_DIR):
-    app.mount("/gui", StaticFiles(directory=FRONTEND_BUILD_DIR, html=True), name="frontend")
+    app.mount("/gui", SPAStaticFiles(directory=FRONTEND_BUILD_DIR, html=True), name="frontend")
     logger.info("✅ Next.js frontend detected & mounted at /gui.")
+else:
+    logger.warning("⚠️ Frontend build directory not found.")
 
 # Serve static files
 if os.path.exists("static"):
