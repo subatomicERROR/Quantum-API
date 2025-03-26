@@ -1,0 +1,6 @@
+{
+  "title": "Quantum-API",
+  "app_file": "app.py",
+  "sdk": "fastapi",
+  "python_version": "3.8"
+}
