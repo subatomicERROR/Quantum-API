@@ -3,6 +3,7 @@ import Head from 'next/head'; // For adding meta tags for SEO
 import Button from '../components/Button';
 import ClickCount from '../components/ClickCount';
 import styles from '../styles/home.module.css';
+import { useDropzone } from 'react-dropzone'; // To handle file uploads
 
 function throwError() {
   console.error(
@@ -31,6 +32,14 @@ function Home() {
       clearInterval(r);
     };
   }, [increment]);
+
+  // Dropzone for file upload handling
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      console.log('Files dropped:', acceptedFiles);
+      // Handle file processing logic here
+    }
+  });
 
   return (
     <>
@@ -77,6 +86,17 @@ function Home() {
             subatomicERROR
           </a>
         </p>
+        <hr className={styles.hr} />
+        
+        {/* File Upload Section */}
+        <div>
+          <h3>Upload Files</h3>
+          <div {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', cursor: 'pointer' }}>
+            <input {...getInputProps()} />
+            <p>Drag 'n' drop some files here, or click to select files</p>
+          </div>
+        </div>
+
         <hr className={styles.hr} />
         <div>
           <p>
