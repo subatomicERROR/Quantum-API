@@ -1,2 +1,4 @@
 frontend-build/
 frontend-build/
+__pycache__/
+node_modules/
