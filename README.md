@@ -40,12 +40,12 @@ license: mit
 # Quantum-API
 
 ## Overview
-Quantum-API is a FastAPI-powered Quantum Computing API integrated with PennyLane. It provides a powerful backend for quantum processing while serving a Next.js frontend.
+Quantum-API is a FastAPI-powered Quantum Computing API integrated with PennyLane. It provides a powerful backend for quantum processing while serving a **Gradio** frontend.
 
 ## Features
 - **FastAPI Backend**: A lightweight, high-performance API framework.
 - **Quantum Processing**: Handles quantum computations with PennyLane.
-- **Next.js Frontend**: Fully integrated for UI interaction.
+- **Gradio Frontend**: Interactive UI for testing API endpoints.
 - **SEO Optimized**: Metadata for better search engine visibility.
 - **Health Check Endpoint**: Ensures the API is running smoothly.
 
@@ -115,9 +115,13 @@ GET /openapi.json
 ```
 Provides the OpenAPI schema for API documentation.
 
-## Static Files
-- The Next.js frontend is served from `frontend-build/` (if detected).
-- Static assets are available at `/static/` (e.g., `/static/favicon.ico`).
+## Gradio Frontend
+- The **Gradio** frontend provides an interactive UI for testing the API endpoints.
+- Run the Gradio app separately using:
+  ```bash
+  python gradio_ui.py
+  ```
+- Access the Gradio interface at `http://localhost:7860`
 
 ## Logging
 Logs are enabled with INFO level logging:
@@ -134,10 +138,9 @@ To deploy on Hugging Face Spaces:
 ## Author
 Developed by **subatomicERROR** (Yash R).
 
-
-
 ## 🛠️ Deployment
 - Hosted on Hugging Face Spaces.
-- Built as a **static Next.js export**.
+- Built with **Gradio** for UI interaction.
 
 📌 **Created by**: [subatomicERROR](https://github.com/subatomicERROR)
+
