@@ -6,6 +6,9 @@ from pydantic import BaseModel
 from typing import Optional
 import logging
 import os
+import gradio as gr
+import uvicorn
+import threading
 
 # Custom StaticFiles class to provide a fallback to index.html for SPA routes
 class SPAStaticFiles(StaticFiles):
@@ -31,7 +34,7 @@ app = FastAPI(
     openapi_url="/openapi.json"
 )
 
-# Serve the Next.js frontend on a subpath (/gui) using the SPAStaticFiles class
+# Serve the Next.js frontend on a subpath (/gui)
 FRONTEND_BUILD_DIR = "frontend-build"
 if os.path.exists(FRONTEND_BUILD_DIR):
     app.mount("/gui", SPAStaticFiles(directory=FRONTEND_BUILD_DIR, html=True), name="frontend")
@@ -51,7 +54,7 @@ class QuantumData(BaseModel):
 # API Router for better structure
 router = APIRouter()
 
-# Root route now redirects to the Next.js GUI at /gui
+# Root route redirects to Next.js GUI
 @router.get("/", response_class=HTMLResponse)
 def home():
     return RedirectResponse(url="/gui")
@@ -88,3 +91,35 @@ def get_open_api_endpoint():
 
 # Include API Router
 app.include_router(router)
+
+# -----------------------------------------
+# 🔹 GRADIO UI FOR QUANTUM-API
+# -----------------------------------------
+def quantum_ai_interface(input_text, quantum_factor=1.0):
+    """
+    Quantum-AI function for processing user input.
+    """
+    result = f"Processed '{input_text}' with quantum factor {quantum_factor}."
+    return result
+
+# Define Gradio Interface
+with gr.Blocks() as gradio_ui:
+    gr.Markdown("# 🔮 Quantum-API UI")
+    gr.Markdown("Enter text and adjust quantum factor for processing.")
+    
+    input_text = gr.Textbox(label="Enter Data", placeholder="Type something...")
+    quantum_factor = gr.Slider(0.1, 10.0, value=1.0, step=0.1, label="Quantum Factor")
+    output_text = gr.Textbox(label="Quantum Output")
+    
+    submit_btn = gr.Button("Process")
+    submit_btn.click(quantum_ai_interface, inputs=[input_text, quantum_factor], outputs=output_text)
+
+# Start Gradio UI in a separate thread
+def start_gradio():
+    gradio_ui.launch(server_name="0.0.0.0", server_port=7861, share=False)
+
+threading.Thread(target=start_gradio).start()
+
+# Run FastAPI app
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=7860)
