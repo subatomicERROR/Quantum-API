@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+qapi_env/
+venv/
+env/
+
+# Environment & config
+.env
+*.log
+
+# OS & editor files
+.DS_Store
+*.swp
+*.swo
