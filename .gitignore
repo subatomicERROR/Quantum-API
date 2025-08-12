@@ -16,3 +16,5 @@ env/
 .DS_Store
 *.swp
 *.swo
+__pycache__/
+qapi_env/
