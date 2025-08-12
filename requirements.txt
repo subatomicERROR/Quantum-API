@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+httpx
+# Quantum
+pennylane
+qiskit
+# Dev
+black
+isort
+flake8
+pytest
+pre-commit
