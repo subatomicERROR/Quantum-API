@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/Quantum-API/static/css/main.f855e6bc.css",
-    "main.js": "/Quantum-API/static/js/main.d5c21227.js",
+    "main.css": "/Quantum-API/static/css/main.1ef983d4.css",
+    "main.js": "/Quantum-API/static/js/main.e7682fba.js",
     "static/js/453.a3c1d153.chunk.js": "/Quantum-API/static/js/453.a3c1d153.chunk.js",
-    "static/media/logo.svg": "/Quantum-API/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/Quantum-API/index.html",
-    "main.f855e6bc.css.map": "/Quantum-API/static/css/main.f855e6bc.css.map",
-    "main.d5c21227.js.map": "/Quantum-API/static/js/main.d5c21227.js.map",
+    "main.1ef983d4.css.map": "/Quantum-API/static/css/main.1ef983d4.css.map",
+    "main.e7682fba.js.map": "/Quantum-API/static/js/main.e7682fba.js.map",
     "453.a3c1d153.chunk.js.map": "/Quantum-API/static/js/453.a3c1d153.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.d5c21227.js"
+    "static/css/main.1ef983d4.css",
+    "static/js/main.e7682fba.js"
   ]
 }
