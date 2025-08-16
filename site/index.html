@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Quantum-API • GUI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet"
+    href="https://unpkg.com/swagger-ui-dist/swagger-ui.css" />
+  <style>
+    body { margin:0; background:#0b0b0f; color:#eaeaea; }
+    .topbar { display:none !important; }
+    #header {
+      padding:16px 20px; font-family: ui-sans-serif, system-ui;
+      background: #0f1115; border-bottom: 1px solid #222;
+      display:flex; gap:10px; align-items:center; flex-wrap: wrap;
+    }
+    input, button, select {
+      background:#0f1115; color:#eaeaea; border:1px solid #333; border-radius:10px; padding:8px 10px;
+    }
+    button { cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <strong>Quantum-API GUI</strong>
+    <label>API Base:
+      <input id="apiBase" size="40" />
+    </label>
+    <label>API Key:
+      <input id="apiKey" size="30" placeholder="X-API-Key" />
+    </label>
+    <button id="apply">Apply</button>
+    <a id="docsLink" target="_blank" style="margin-left:auto; color:#9bd;">Open FastAPI /docs</a>
+  </div>
+  <div id="swagger"></div>
+
+  <script src="config.js"></script>
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+  <script>
+    const state = {
+      apiBase: window.APP_CONFIG.API_BASE || "",
+      apiKey: window.APP_CONFIG.API_KEY || ""
+    };
+    const apiBaseInput = document.getElementById('apiBase');
+    const apiKeyInput  = document.getElementById('apiKey');
+    const applyBtn     = document.getElementById('apply');
+    const docsLink     = document.getElementById('docsLink');
+
+    function renderSwagger() {
+      docsLink.href = state.apiBase + "/docs";
+      window.ui = SwaggerUIBundle({
+        url: state.apiBase + "/openapi.json",
+        dom_id: '#swagger',
+        requestInterceptor: (req) => {
+          if (state.apiKey) {
+            req.headers['X-API-Key'] = state.apiKey;
+          }
+          return req;
+        }
+      });
+    }
+
+    function load() {
+      apiBaseInput.value = state.apiBase;
+      apiKeyInput.value = state.apiKey;
+      renderSwagger();
+    }
+
+    applyBtn.onclick = () => {
+      state.apiBase = apiBaseInput.value.trim();
+      state.apiKey  = apiKeyInput.value.trim();
+      renderSwagger();
+    };
+
+    load();
+  </script>
+</body>
+</html>

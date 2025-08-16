@@ -1,13 +1,13 @@
-#!/bin/bash
-PORT=8000
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
 
-# Kill any existing process using the port
-if lsof -ti :$PORT >/dev/null; then
-    echo "Killing old process on port $PORT..."
-    kill -9 $(lsof -ti :$PORT)
-fi
+export $(grep -v '^#' .env | xargs -d '\n' -I {} echo {}) >/dev/null 2>&1 || true
+ENV="${APP_ENV:-development}"
 
-# Start uvicorn in foreground mode
-echo "Starting Quantum-API on http://127.0.0.1:$PORT"
-exec uvicorn app.main:app --host 127.0.0.1 --port $PORT --reload
+HOST=$(jq -r ".environments.\"$ENV\".host" config.json)
+PORT=$(jq -r ".environments.\"$ENV\".port" config.json)
+RELOAD=$(jq -r ".environments.\"$ENV\".reload" config.json)
 
+echo "🔌 Uvicorn on $HOST:$PORT (env=$ENV, reload=$RELOAD)"
+exec uvicorn app.main:app --host "$HOST" --port "$PORT" $( [ "$RELOAD" = "true" ] && echo --reload )

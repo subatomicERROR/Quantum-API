@@ -1,105 +1,54 @@
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse, JSONResponse
+import os
+from fastapi import FastAPI, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
-from datetime import datetime
+from fastapi.responses import HTMLResponse, RedirectResponse
 
-# === App Metadata (Customized for Yash R / subatomicERROR) ===
+from app.config import CONF
+from app.security.api_key import require_api_key
+from app.routers.health import router as health_router
+from app.services.quantum_backend import get_backend_choice, select_backend
+
+cfg, env, settings = CONF["cfg"], CONF["env"], CONF["settings"]
+
 app = FastAPI(
-    title="Quantum-API",
-    description="Quantum Computing REST API by Yash R (subatomicERROR) - Interface for Quantum-ML and Quantum-Compute systems",
-    version="3.1.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
-    contact={
-        "name": "Yash R (subatomicERROR)",
-        "url": "https://github.com/subatomicERROR",
-        "email": "subatomicerror@gmail.com",
-    },
-    license_info={
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
-    },
-    openapi_tags=[{
-        "name": "Quantum",
-        "description": "Operations with quantum states and simulations",
-        "externalDocs": {
-            "description": "GitHub Repository",
-            "url": "https://github.com/subatomicERROR/Quantum-API",
-        },
-    }]
+    title=cfg["app"]["name"],
+    version=cfg["app"]["version"],
+    debug=settings["debug"],
+    docs_url=cfg["app"]["docs_route"],
+    redoc_url=cfg["app"]["redoc_route"]
 )
 
-# === CORS Configuration ===
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings["cors_origins"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# === Root Route: Customized Quantum Dashboard ===
+# Global dependency for API key + simple rate limit
+@app.middleware("http")
+async def auth_and_rate_limit(request: Request, call_next):
+    # delegate to security module (allows anonymous for some routes)
+    await require_api_key(request)
+    return await call_next(request)
+
 @app.get("/", response_class=HTMLResponse)
-async def root():
-    current_year = datetime.now().year
-    html_content = f"""
-    <!DOCTYPE html>
-    <html lang="en">
-    <!-- Previous UI remains exactly the same -->
-    </html>
-    """
-    return HTMLResponse(content=html_content)
+def root():
+    if cfg["app"]["root_redirect_to_docs"]:
+        return RedirectResponse(url=cfg["app"]["docs_route"])
+    return f"<h1>{cfg['app']['name']}</h1><p>Environment: {env}</p>"
 
-# === Health Check ===
-@app.get("/health", response_class=JSONResponse)
-async def health():
-    return {
-        "status": "ok", 
-        "message": "Quantum-API by Yash R (subatomicERROR) is operational",
-        "developer": "Yash R (subatomicERROR)",
-        "contact": "subatomicerror@gmail.com",
-        "timestamp": datetime.now().isoformat(),
-        "version": app.version
-    }
+# Example: current backend
+@app.get("/quantum/backend")
+def current_backend():
+    return get_backend_choice()
 
-# === Quantum Simulation ===
-@app.get("/quantum/simulate", 
-         response_class=JSONResponse,
-         tags=["Quantum"],
-         summary="Simulate a qubit state",
-         description="Quantum simulation endpoint developed by Yash R (subatomicERROR)",
-         response_description="Simulation results with quantum fidelity metrics")
-async def simulate_qubit(state: str = "0"):
-    return {
-        "developer": "Yash R (subatomicERROR)",
-        "input_state": state, 
-        "result": f"|{state}> (simulated with 99.9% fidelity)",
-        "simulation_time": "42.3µs",
-        "quantum_volume": "256",
-        "timestamp": datetime.now().isoformat()
-    }
+# Example: switch backend via query (?name=qiskit.aer)
+@app.post("/quantum/backend/select")
+def switch_backend(name: str):
+    return select_backend(name)
 
-# === Version Endpoint ===
-@app.get("/version", 
-         response_class=JSONResponse,
-         summary="API Version Info",
-         description="Version information for Quantum-API by Yash R (subatomicERROR)")
-async def version():
-    return {
-        "version": app.version, 
-        "developer": "Yash R (subatomicERROR)",
-        "contact": "subatomicerror@gmail.com",
-        "repository": "https://github.com/subatomicERROR/Quantum-API",
-        "license": "MIT",
-        "release_date": "2023-11-15"
-    }
-
-# === Run Standalone ===
-if __name__ == "__main__":
-    uvicorn.run(
-        "main:app", 
-        host="127.0.0.1", 
-        port=8000, 
-        reload=True
-    )
+# Plug routers
+app.include_router(health_router)
