@@ -1,54 +1,48 @@
-# === Python Bytecode & Cache ===
+# Virtual environment
+qapi_env/
+venv/
+*.venv/
+
+# Python cache
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.pycache/
 
-# === Virtual Environments ===
-qapi_env/
-venv/
-env/
-*.env
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# === Logs & Runtime Files ===
+# Logs and temp
 *.log
+*.pot
+*.pyc
+*.pkl
 *.sqlite3
 *.db
-*.pid
 
-# === IDE / Editor Files ===
+# VSCode / PyCharm / IDE settings
 .vscode/
 .idea/
-*.sublime-workspace
-*.sublime-project
-*.swp
-*.swo
 
-# === macOS Files ===
+# OS files
 .DS_Store
-.AppleDouble
-.LSOverride
+Thumbs.db
 
-# === Coverage & Test Artifacts ===
-.coverage
-htmlcov/
-.tox/
-.nox/
-.pytest_cache/
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-
-# === Node / Frontend (if any) ===
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# === Misc / Other Temporary Files ===
-*.bak
-*.tmp
-*.temp
-
+# Docker / env files
+.env
+.env.*
+docker-compose.override.yml
