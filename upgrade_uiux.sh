@@ -1,3 +1,22 @@
+#!/bin/bash
+# upgrade_uiux.sh
+# 🔧 Upgrade Quantum-API Landing Page UI/UX with interactive bio-neural-network background
+
+MAIN_PY="$HOME/Quantum-API/app/main.py"
+BACKUP_PY="$HOME/Quantum-API/app/main.py.bak"
+
+echo "🔧 Backing up current main.py..."
+if [ -f "$MAIN_PY" ]; then
+    cp "$MAIN_PY" "$BACKUP_PY"
+    echo "✅ Backup created at main.py.bak"
+else
+    echo "⚠️ main.py not found! Make sure you are in the correct folder."
+    exit 1
+fi
+
+echo "🚀 Writing upgraded main.py with professional UI/UX..."
+
+cat > "$MAIN_PY" << 'EOF'
 import os
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -205,3 +224,7 @@ def switch_backend(name: str):
 
 # --- Health & other routers ---
 app.include_router(health_router)
+EOF
+
+echo "✅ main.py upgraded with professional UI/UX and live bio-neural-network background."
+echo "💡 Restart server: ./start_dev.sh"
