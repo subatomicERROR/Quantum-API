@@ -7,14 +7,19 @@
     "redoc_route": "/redoc",
     "root_redirect_to_docs": true
   },
-
   "environments": {
     "development": {
       "host": "127.0.0.1",
       "port": 8000,
       "reload": true,
       "debug": true,
-      "cors_origins": ["http://127.0.0.1:3000", "http://localhost:3000", "http://127.0.0.1:8000", "http://localhost:8000"],
+      "cors_origins": [
+        "http://127.0.0.1:3000",
+        "http://localhost:3000",
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+        "https://subatomicERROR.github.io"
+      ],
       "api_base_url": "http://127.0.0.1:8000"
     },
     "staging": {
@@ -22,7 +27,10 @@
       "port": 8000,
       "reload": false,
       "debug": false,
-      "cors_origins": ["https://staging.quantum-api.subatomicERROR.dev"],
+      "cors_origins": [
+        "https://staging.quantum-api.subatomicERROR.dev",
+        "https://subatomicERROR.github.io"
+      ],
       "api_base_url": "https://staging.quantum-api.subatomicERROR.dev"
     },
     "production": {
@@ -30,18 +38,25 @@
       "port": 8000,
       "reload": false,
       "debug": false,
-      "cors_origins": ["https://subatomicERROR.github.io"],
+      "cors_origins": [
+        "https://subatomicERROR.github.io",
+        "https://subatomicERROR.github.io"
+      ],
       "api_base_url": "https://api.subatomicerror.dev"
     }
   },
-
   "security": {
     "api_key_header": "X-API-Key",
     "jwt_algorithm": "HS256",
     "rate_limit_per_minute": 60,
-    "allow_anonymous_routes": ["/", "/health", "/openapi.json", "/docs", "/redoc"]
+    "allow_anonymous_routes": [
+      "/",
+      "/health",
+      "/openapi.json",
+      "/docs",
+      "/redoc"
+    ]
   },
-
   "quantum_backends": {
     "default": "pennylane.lightning.qubit",
     "options": {
